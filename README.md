@@ -5,6 +5,7 @@ A hospital has been incurring a lot of losses in revenue and life due to its ine
 Find out what factors affect the LOS the most, and come up with a machine learning model which can predict the LOS of a patient, using the data available during admission and after running a few tests. 
 
 # Data
+The link to the dataset https://drive.google.com/file/d/1AuAS7alsvVXZQIaqQyNunZT0vpEY9Y7L/view?usp=share_link
 The data contains various information recorded during the time of admission of the patient. It only contains records of patients who were admitted to the hospital. The detailed data dictionary is given below:<br>
 
 <li>patientid: Patient ID
