@@ -2,6 +2,8 @@ import pickle
 from fastapi import FastAPI
 from pydantic import BaseModel
 import pandas as pd
+import requests
+
 
 class InputData(BaseModel):
     Available_Extra_Rooms_in_Hospital: int
@@ -9,7 +11,6 @@ class InputData(BaseModel):
     Ward_Facility_Code: str
     doctor_name: str
     staff_available: int
-    patientid: int
     Age: str
     gender: str
     Type_of_Admission: str
@@ -24,7 +25,10 @@ app = FastAPI()
 @app.on_event("startup")
 def load_model():
     global model
-    model = pickle.load(open("/content/LOSmodel.pkl", "rb"))
+    model_url = "https://github.com/username/repo/releases/latest/download/LOSmodel.pkl"
+    response = requests.get(model_url)
+    response.raise_for_status()
+    model = pickle.loads(response.content)
 
 @app.post('/predict')
 async def make_prediction(input_data: InputData):
