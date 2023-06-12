@@ -25,7 +25,7 @@ app = FastAPI()
 @app.on_event("startup")
 def load_model():
     global model
-    model_url = "https://github.com/username/repo/releases/latest/download/LOSmodel.pkl"
+    model_url = "https://github.com/KevKibe/Hospital-LOS-Prediction/releases/download/Model01/LOSmodel.pkl"
     response = requests.get(model_url)
     response.raise_for_status()
     model = pickle.loads(response.content)
