@@ -32,13 +32,10 @@ def load_model():
 
 @app.post('/predict')
 async def make_prediction(input_data: InputData):
-    # Convert the input data to a dictionary
     input_dict = input_data.dict()
 
-    # Create a DataFrame from the input dictionary
     input_df = pd.DataFrame([input_dict])
 
-    # Perform one-hot encoding on the categorical features
     categorical_features = ['Department', 'Ward_Facility_Code', 'doctor_name', 'Age', 'gender',
                             'Type_of_Admission', 'Severity_of_Illness', 'health_conditions', 'Insurance']
     encoded_features = pd.get_dummies(input_df[categorical_features], drop_first=True)
@@ -46,6 +43,8 @@ async def make_prediction(input_data: InputData):
     processed_features = pd.concat([encoded_features, input_df.drop(categorical_features, axis=1)], axis=1)
 
     predictions = model.predict(processed_features)
+
+    rounded_predictions = [int(round(prediction)) for prediction in predictions]
 
     return {"predictions": predictions.tolist()}
 
