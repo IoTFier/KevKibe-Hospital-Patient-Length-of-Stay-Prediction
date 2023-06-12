@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 import io
+import uvicorn
 
 st.title("Hospital length of stay Prediction")
 
@@ -31,3 +32,5 @@ if uploaded_file is not None:
     except Exception as e:
         st.error(f"Error: {e}")
 
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8080)
