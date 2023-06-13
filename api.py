@@ -26,10 +26,9 @@ app = FastAPI()
 @app.on_event("startup")
 def load_model():
     global model
-    model_url = "https://github.com/KevKibe/Hospital-LOS-Prediction/releases/download/Model01/LOSmodel.pkl"
-    response = requests.get(model_url)
-    response.raise_for_status()
-    model = pickle.loads(response.content)
+    model_path = "G:\Downloads New\LOSmodel.pkl"
+    with open(model_path, "rb") as file:
+        model = pickle.load(file)
 
 @app.post('/predict')
 async def make_prediction(input_data: InputData):
@@ -50,4 +49,4 @@ async def make_prediction(input_data: InputData):
     return {"predictions": predictions.tolist()}
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000)
