@@ -6,3 +6,4 @@ openpyxl
 fastapi
 pydantic
 uvicorn
+sklearn
