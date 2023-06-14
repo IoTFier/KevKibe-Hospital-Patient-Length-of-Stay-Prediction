@@ -1,5 +1,4 @@
-# Exclude virtual environment
 env/
-
-# Exclude downloaded dependencies
-
+__pycache__
+LOSModel (2).pkl
+LOSmodel.pkl

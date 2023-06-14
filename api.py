@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import pandas as pd
 import requests
 import uvicorn
-
+import joblib
 
 class InputData(BaseModel):
     Available_Extra_Rooms_in_Hospital: int
@@ -26,9 +26,10 @@ app = FastAPI()
 @app.on_event("startup")
 def load_model():
     global model
-    model_path = "G:\Downloads New\LOSmodel.pkl"
-    with open(model_path, "rb") as file:
-        model = pickle.load(file)
+    model_path = r"C:\Users\kibe\Desktop\Projects\Hospital-LOS-Prediction\LOSmodel.pkl"
+    with open(model_path,"rb") as f:
+        model=pickle.load(f)
+
 
 @app.post('/predict')
 async def make_prediction(input_data: InputData):
