@@ -8,3 +8,4 @@ pydantic
 uvicorn
 scikit-learn
 joblib
+gunicorn

@@ -26,7 +26,7 @@ app = FastAPI()
 @app.on_event("startup")
 def load_model():
     global model
-    model_path = r"C:\Users\kibe\Desktop\Projects\Hospital-LOS-Prediction\LOSmodel.pkl"
+    model_path = r"C:\Users\kibe\Desktop\Projects\Hospital-LOS-Prediction\LOSModel6.pkl"
     with open(model_path,"rb") as f:
         model=pickle.load(f)
 
@@ -47,7 +47,7 @@ async def make_prediction(input_data: InputData):
 
     rounded_predictions = [int(round(prediction)) for prediction in predictions]
 
-    return {"predictions": predictions.tolist()}
+    return {"predictions": rounded_predictions}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)

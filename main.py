@@ -14,9 +14,11 @@ if uploaded_file is not None:
         st.write("Original DataFrame:")
         st.dataframe(df)
 
-        response = requests.post('http://localhost:8000/predict', json=df.to_dict())
-
-        predictions = response.json()["predictions"]
+        predictions = []
+        for _, row in df.iterrows():
+            response = requests.post('http://localhost:8000/predict', json=row.to_dict())
+            prediction = response.json()["predictions"]
+            predictions.append(prediction)
 
         df["Prediction"] = predictions
 
