@@ -51,7 +51,7 @@ def make_prediction(model, data):
     return data
 
 
-model = pickle.load(open('modelv3.pickle', 'rb'))
+model = pickle.load(open('LOSModel7.pkl', 'rb'))
 
 
 
