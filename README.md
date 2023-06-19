@@ -24,7 +24,7 @@ I The model performed well with a Mean Absolute Error of 0.86 and R-Squared of 0
 You can check how I came up with the [model](https://github.com/KevKibe/Hospital-LOS-Prediction/blob/main/HospitalLOSpred.ipynb)
 
 # Deployment
-I deployed the model using [streamlit](https://kevkibe-hospital-los-prediction-main-0sls8c.streamlit.app/) and also  using FastAPI <br>
+I deployed the model to [streamlit](https://kevkibe-hospital-los-prediction-main-0sls8c.streamlit.app/) as the UI as a Flask API running from Google App Engine <br>
 You can use the [test data](https://github.com/KevKibe/Hospital-LOS-Prediction/blob/main/Test_data.xlsx) to see the output which is the same file with an additional column at the end with the predictions of the length of stay of each patient.
 
 # Conclusion
