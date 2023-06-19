@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
+import requests
 import base64
-import pickle
 
 def preprocess_data(data):
     column_mapping = {
@@ -43,15 +43,13 @@ def preprocess_data(data):
 def make_prediction(model, data):
     preprocessed_data = preprocess_data(data)
 
-    predictions = model.predict(preprocessed_data)
-    predictions = [round(pred) for pred in predictions]
+    # Send a POST request to the API
+    response = requests.post('http://localhost:5000/predict', json=preprocessed_data.to_dict())
+    predictions = response.json()['predictions']
 
     data['predicted_los'] = predictions
 
     return data
-
-
-model = pickle.load(open('LOSModel7.pkl', 'rb'))
 
 
 
@@ -70,5 +68,3 @@ if uploaded_file is not None:
     b64 = base64.b64encode(csv.encode()).decode()
     href = f'<a href="data:file/csv;base64,{b64}" download="modified_data.csv">Download Modified Excel File</a>'
     st.markdown(href, unsafe_allow_html=True)
-
-
