@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 import base64
+import pickle
 
 def preprocess_data(data):
     column_mapping = {
@@ -40,11 +41,11 @@ def preprocess_data(data):
 
     return data
 
-def make_prediction(model, data):
+def make_prediction(api_url, data):
     preprocessed_data = preprocess_data(data)
 
     # Send a POST request to the API
-    response = requests.post('http://localhost:5000/predict', json=preprocessed_data.to_dict())
+    response = requests.post(api_url, json=preprocessed_data.to_dict())
     predictions = response.json()['predictions']
 
     data['predicted_los'] = predictions
@@ -52,13 +53,13 @@ def make_prediction(model, data):
     return data
 
 
-
+api_url = 'http://localhost:5000/predict'  # Replace with the actual API endpoint URL
 st.title('Hospital LOS Prediction')
 uploaded_file = st.file_uploader("Upload a file", type=['xlsx'])
 
 if uploaded_file is not None:
     data = pd.read_excel(uploaded_file)
-    predicted_data = make_prediction(model, data)
+    predicted_data = make_prediction(api_url, data)
 
     st.subheader('Modified Excel File')
     st.write(predicted_data)
