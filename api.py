@@ -1,54 +1,47 @@
-import pickle
-from fastapi import FastAPI
-from pydantic import BaseModel
+from flask import Flask, request, jsonify
 import pandas as pd
-import uvicorn
+import pickle
 import numpy as np
 
-class InputData(BaseModel):
-    Available_Extra_Rooms_in_Hospital: int
-    Department: str
-    Ward_Facility_Code: str
-    doctor_name: str
-    staff_available: int
-    Age: str
-    gender: str
-    Type_of_Admission: str
-    Severity_of_Illness: str
-    health_conditions: str
-    Visitors_with_Patient: int
-    Insurance: str
-    Admission_Deposit: float
 
-app = FastAPI()
+app = Flask(__name__)
 
-@app.on_event("startup")
-def load_files():
-    global model
-    global enc
-    global features
-    enc = pickle.load(open('encoder.pkl','rb'))
-    features = pickle.load(open('features.pkl','rb'))                  
-    model=pickle.load(open('modelv3.pickle','rb'))
+enc = pickle.load(open('encoder.pkl','rb'))
+features = pickle.load(open('features.pkl','rb'))                  
+model=pickle.load(open('modelv3.pickle','rb'))
 
 
-@app.post('/predict')
-async def make_prediction(input_data: InputData):
-    input_dict = input_data.dict()
+@app.route('/predict', methods=['POST'])
+def predict():
+    input_data = request.get_json()
 
-    columns_to_encode = ['Age', 'gender', 'Type_of_Admission', 'Severity_of_Illness', 'health_conditions', 'Insurance',
+    #input df
+    df= pd.DataFrame(input_data, index=[0])
+
+    #matching input data to data that was fit to model features
+    columns_to_encode= ['Age', 'gender', 'Type_of_Admission', 'Severity_of_Illness', 'health_conditions', 'Insurance',
                          'Ward_Facility_Code', 'doctor_name', 'Department']
-    to_encode = [input_dict[col] for col in columns_to_encode]
+    #locating the categorical features
+    df = df.loc[:, columns_to_encode]
+    #creating a list for those categorical features in the input data
+    to_encode = [input_data[col] for col in columns_to_encode]
+    #using the imported encoder to encode the features
     encoded_features = list(enc.transform(np.array(to_encode).reshape(1,-1))[0])
 
-    # Input array
-    to_predict = [input_dict[feature] for feature in features if feature not in columns_to_encode]
-    to_predict += encoded_features
+    to_predict = [input_data[feature] for feature in features if feature not in columns_to_encode]
+    input_data = to_predict + encoded_features
+    input_columns = [feature for feature in features if feature not in columns_to_encode] + list(enc.get_feature_names_out(columns_to_encode))
+    df_encoded = pd.DataFrame([input_data], columns=input_columns)
 
-    prediction = model.predict(np.array(to_predict).reshape(1,-1))
+    #prediction
+    prediction = model.predict(df_encoded)
+    return jsonify({'prediction': prediction.tolist()})
 
-    return {"predictions": prediction[0]}
+
+
+
+
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    app.run()

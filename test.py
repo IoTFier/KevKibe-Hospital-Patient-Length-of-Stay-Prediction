@@ -1,5 +1,7 @@
 import requests
-to_predict_dict = {"Available_Extra_Rooms_in_Hospital": 8,
+import json
+
+input_data = {"Available_Extra_Rooms_in_Hospital": 8,
                    "Department": "anesthesia",
                    "Ward_Facility_Code": "B",
                    "doctor_name": "Dr Olivia",
@@ -14,6 +16,11 @@ to_predict_dict = {"Available_Extra_Rooms_in_Hospital": 8,
                    "Admission_Deposit": 4800.0
                    }
 
-url = 'http://127.0.0.1:8000/predict'
-r = requests.post(url,json=to_predict_dict); r.json()
-print(r.text)
+payload = json.dumps(input_data)
+
+headers = {'Content-Type': 'application/json'}
+
+response= requests.post('http://localhost:5000/predict', data=payload, headers=headers)
+
+print(response.json())
+
