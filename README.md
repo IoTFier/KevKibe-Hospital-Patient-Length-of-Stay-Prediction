@@ -24,8 +24,19 @@ I The model performed well with a Mean Absolute Error of 0.86 and R-Squared of 0
 You can check how I came up with the [model](https://github.com/KevKibe/Hospital-LOS-Prediction/blob/main/HospitalLOSpred.ipynb)
 
 # Deployment
-I deployed the model to [streamlit](https://kevkibe-hospital-los-prediction-main-0sls8c.streamlit.app/) as the UI as a Flask API running from Google App Engine <br>
+I deployed the model to [streamlit](https://kevkibe-hospital-los-prediction-main-0sls8c.streamlit.app/) and as a Flask API a REST API using Flask through Docker image to Google Cloud Run. <br>
 You can use the [test data](https://github.com/KevKibe/Hospital-LOS-Prediction/blob/main/Test_data.xlsx) to see the output which is the same file with an additional column at the end with the predictions of the length of stay of each patient.
 
-# Conclusion
-The model needs a pipeline on a cloud platform such as GCP to train it on streaming data for better performance. 
+## Prerequisites
+- Python3.7
+- Docker
+- 
+## Installation
+1. Clone the repository: `git clone https://github.com/KevKibe/Hospital-Patient-Length-of-Stay-Prediction`
+2. Navigate to the project directory: `cd Hospital-Patient-Length-of-Stay-Prediction`
+3. Install the dependencies: `pip install -r requirements.txt`
+
+## Usage
+1. Start the Flask API: `python main.py`
+2. Access the web interface at: `https://claim-fraud-detection-f5m2fxxbbq-uc.a.run.app` or your local server `http://localhost:5000`
+3. Run the model on test data: `python test.py`
