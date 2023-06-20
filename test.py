@@ -20,7 +20,8 @@ payload = json.dumps(input_data)
 
 headers = {'Content-Type': 'application/json'}
 
-response= requests.post('http://localhost:5000/predict', data=payload, headers=headers)
+response= requests.post('https://hospital-los-pred-f5m2fxxbbq-uw.a.run.app/predict', data=payload, headers=headers)
+print(response.text)
 
 print(response.json())
 
